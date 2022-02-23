@@ -11,13 +11,13 @@
   </head>
   <body>
     <div class="chat-box">
-      <input id="local-peer-name" placeholder="Digite seu nome..." />
-			<button onclick="connectPeer()">Entrar</button>
-      <button class="iniciar-audio btn btn-primary" onclick="startaudio()">Iniciar audio</button>
-      <div id="chat" style="height: 300px; overflow-y: auto;">			
+      <label for="local-peer-name" class="form-label">Nome:</label>
+      <input id="local-peer-name" class="input-group-text" placeholder="Digite seu nome..." />
+			<button class="btn btn-primary" onclick="startaudio()"">Entrar</button>
+      <div id="chat" style="height: 300px; overflow-y: auto;">	
+        <textarea id="message-content" class="form-control" placeholder="Digite sua mensagem..."></textarea>
+		    <button id="send-message">Enviar</button>		
 		  </div>
-		  <textarea id="message-content" placeholder="Digite sua mensagem..."></textarea>
-		  <button id="send-message">Enviar</button>
     </div>
     <div id="unity-container" class="unity-desktop">
       <canvas id="unity-canvas"></canvas>
