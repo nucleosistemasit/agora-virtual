@@ -5,8 +5,10 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Metaverso Caxias</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
-    <link rel="stylesheet" href="TemplateData/style.css">
-    <link rel="stylesheet" href="style.css">
+    <!-- CSS only -->
+    <link rel="stylesheet" href="TemplateData/style.css">    
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
   </head>
   <body>
     <div id="unity-container" class="unity-desktop">
@@ -25,12 +27,13 @@
         <div id="unity-fullscreen-button"></div>
         <div id="unity-build-title">Metaverso Caxias</div>
       </div>
-      <button onclick="startaudio()">Iniciar audio</button>
-      <button onclick="starthost()">Iniciar host</button>
-      <button id="previous-slide">Voltar slide</button>
-	  	<button id="next-slide">Avançar slide</button>
+      <button class="iniciar-audio btn btn-primary" onclick="startaudio()">Iniciar audio</button>
+      <!-- <button onclick="starthost()">Iniciar host</button> -->
+      <!-- <button id="previous-slide">Voltar slide</button> -->
+	  	<!-- <button id="next-slide">Avançar slide</button> -->
     </div>
     <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
     <script>
       var buildUrl = "Build";
       var loaderUrl = buildUrl + "/PALESTRA_METAVERSOCAXIAS_DEV.loader.js";
