@@ -16,7 +16,7 @@
 			<button class="btn btn-primary" onclick="startaudio()"">Entrar</button>
       <div id="chat" style="height: 300px; overflow-y: auto;">	
         <textarea id="message-content" class="form-control" placeholder="Digite sua mensagem..."></textarea>
-		    <button id="send-message">Enviar</button>		
+		    <button id="send-message" class="btn btn-primary">Enviar</button>		
 		  </div>
     </div>
     <div id="unity-container" class="unity-desktop">
@@ -138,7 +138,7 @@
               // Participante recebe pacote
 							if (data.type == 'chat') {
 								let peerNode = document.createElement('p');
-								peerNode.innerHTML = '<strong>Palestrante</strong>: ' + data.content;
+								peerNode.innerHTML = '<strong class="chat-host">Palestrante</strong>: ' + data.content;
 								document.getElementById('chat').appendChild(peerNode);
 								document.getElementById('chat').scrollTop = document.getElementById('chat').scrollHeight;
 							}
