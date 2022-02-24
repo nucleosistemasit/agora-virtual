@@ -142,12 +142,14 @@
 								document.getElementById('chat').appendChild(peerNode);
 								document.getElementById('chat').scrollTop = document.getElementById('chat').scrollHeight;
 							}
-							else if (data.type == 'command') {
-                console.log(data);
+							else if (data.type == 'command' && data.content == string) {                
 								// Call Unity function						
                 // Participante recebe comando (voltar/avançar slide)
-                gameInstance.SendMessage('ScriptHandler', 'SlideChange', data.content);              
+                gameInstance.SendMessage('ScriptHandler', 'SlideChange', data.content);                 
 							}              
+              else {
+                gameInstance.SendMessage('ScriptHandler', 'WhichPalestranteWillTalk', data.content);             
+              }
             });
           });
 
