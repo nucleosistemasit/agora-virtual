@@ -137,10 +137,12 @@
             conn.on('data', function(data) {
               // Participante recebe pacote
 							if (data.type == 'chat') {
-								let peerNode = document.createElement('p');
-								peerNode.innerHTML = '<strong class="chat-host">Palestrante</strong>: ' + data.content;
-								document.getElementById('chat').appendChild(peerNode);
-								document.getElementById('chat').scrollTop = document.getElementById('chat').scrollHeight;
+                if (data.peer != peer.id) {
+                  let peerNode = document.createElement('p');
+                  peerNode.innerHTML = '<strong>' + (data.name || 'Palestrante') + '</strong>: ' + data.content;
+                  document.getElementById('chat').appendChild(peerNode);
+                  document.getElementById('chat').scrollTop = document.getElementById('chat').scrollHeight;
+                }
 							}
 							else if (data.type == 'command' && typeof data.content === 'string') {                
 								// Call Unity function						
