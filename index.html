@@ -153,8 +153,8 @@
 		if (data.name == 'changeHost') {
                     gameInstance.SendMessage('ScriptHandler', 'WhichPalestranteWillTalk', data.content);
 		}
-		else if (data.name == 'slideChange') {
-		    gameInstance.SendMessage('ScriptHandler', 'SlideChange', data.content);
+		else if (data.name == 'slideSet') {
+		    gameInstance.SendMessage('ScriptHandler', 'SlideSet', data.content);
 		}
               }
             });
