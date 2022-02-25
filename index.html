@@ -150,7 +150,12 @@
                 gameInstance.SendMessage('ScriptHandler', 'SlideChange', data.content);                 
 							}              
               else {
-                gameInstance.SendMessage('ScriptHandler', 'WhichPalestranteWillTalk', data.content);             
+		if (data.name == 'changeHost') {
+                    gameInstance.SendMessage('ScriptHandler', 'WhichPalestranteWillTalk', data.content);
+		}
+		else if (data.name == 'slideSet') {
+		    gameInstance.SendMessage('ScriptHandler', 'SlideSet', data.content);
+		}
               }
             });
           });
