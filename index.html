@@ -99,9 +99,77 @@
       };
 
       document.body.appendChild(script);        
-      
+      var peer = null;
+			var conn = null;
+			var reconnectionInterval = null;
+			var destinationId = null;
+			var peerName = null;
+
+      function setConnection(conn) {
+        conn.on('open', function() {
+          if (reconnectionInterval) {
+						console.log('host reconnected');
+						clearInterval(reconnectionInterval);
+					}
+
+					function sendMessage() {
+						// Send message
+						let messageTextarea = document.getElementById('message-content');
+						let messageContent = messageTextarea.value;
+						conn.send({type: 'chat', content: messageContent});
+
+						// Print message
+						let peerNode = document.createElement('p');
+						peerNode.innerHTML = '<strong>' + conn.metadata.name + '</strong>: ' + messageContent;
+						document.getElementById('chat').appendChild(peerNode);
+						document.getElementById('chat').scrollTop = document.getElementById('chat').scrollHeight;
+
+						// Clear textarea
+						messageTextarea.value = '';
+					}
+
+          document.getElementById("send-message").addEventListener("click", sendMessage);
+
+          conn.on('data', function(data) {
+            // Participante recebe pacote
+            if (data.type == 'chat') {
+              if (data.peer != peer.id) {
+                let peerNode = document.createElement('p');
+                peerNode.innerHTML = '<strong>' + (data.name || 'Palestrante') + '</strong>: ' + data.content;
+                document.getElementById('chat').appendChild(peerNode);
+                document.getElementById('chat').scrollTop = document.getElementById('chat').scrollHeight;
+              }
+            }
+            else if (data.type == 'command' && typeof data.content === 'string') {                
+              // Call Unity function						
+              // Participante recebe comando (voltar/avançar slide)
+              gameInstance.SendMessage('ScriptHandler', 'SlideChange', data.content);                 
+            }              
+            else {
+		          if (data.name == 'changeHost') {
+                gameInstance.SendMessage('ScriptHandler', 'WhichPalestranteWillTalk', data.content);
+		          }
+		          else if (data.name == 'slideSet') {
+		            gameInstance.SendMessage('ScriptHandler', 'SlideSet', data.content);
+		          }
+            }
+          });
+
+          // Reconnection
+					conn.on('close', function() {
+						document.getElementById("send-message").removeEventListener("click", sendMessage);
+						// Retry every 5 seconds
+						reconnectionInterval = setInterval(function() {
+							console.log('retrying connection...');
+							conn = peer.connect(destinationId, {metadata: {name: peerName}, serialization: 'json'});
+							setConnection(conn);
+						}, 5000);
+					});
+        });
+      }
+
       function startaudio() {
-        let peer = new Peer({
+        peer = new Peer({
             config: {
                 'iceServers': [
                 {
@@ -129,58 +197,15 @@
           let audioNode = document.createElement('audio');
           audioNode.controls = 'controls';        
           document.body.appendChild(audioNode);
-          let destinationId = 'metaversosul-nucleo-1';
-          let peerName = document.getElementById('local-peer-name').value;
-					let conn = peer.connect(destinationId, {metadata: {name: peerName}, serialization: 'json'});
+          destinationId = 'metaversosul-nucleo-1';
+          peerName = document.getElementById('local-peer-name').value;
+					conn = peer.connect(destinationId, {metadata: {name: peerName}, serialization: 'json'});
 
-          conn.on('open', function() {
-            conn.on('data', function(data) {
-              // Participante recebe pacote
-							if (data.type == 'chat') {
-                if (data.peer != peer.id) {
-                  let peerNode = document.createElement('p');
-                  peerNode.innerHTML = '<strong>' + (data.name || 'Palestrante') + '</strong>: ' + data.content;
-                  document.getElementById('chat').appendChild(peerNode);
-                  document.getElementById('chat').scrollTop = document.getElementById('chat').scrollHeight;
-                }
-							}
-							else if (data.type == 'command' && typeof data.content === 'string') {                
-								// Call Unity function						
-                // Participante recebe comando (voltar/avançar slide)
-                gameInstance.SendMessage('ScriptHandler', 'SlideChange', data.content);                 
-							}              
-              else {
-		if (data.name == 'changeHost') {
-                    gameInstance.SendMessage('ScriptHandler', 'WhichPalestranteWillTalk', data.content);
-		}
-		else if (data.name == 'slideSet') {
-		    gameInstance.SendMessage('ScriptHandler', 'SlideSet', data.content);
-		}
-              }
-            });
-          });
-
-          const sendButton = document.getElementById("send-message");
-
-					sendButton.addEventListener("click", function() {
-						// Send message
-						let messageTextarea = document.getElementById('message-content');
-						let messageContent = messageTextarea.value;
-						conn.send({type: 'chat', content: messageContent});
-
-						// Print message
-						let peerNode = document.createElement('p');
-						peerNode.innerHTML = '<strong>' + conn.metadata.name + '</strong>: ' + messageContent;
-						document.getElementById('chat').appendChild(peerNode);
-						document.getElementById('chat').scrollTop = document.getElementById('chat').scrollHeight;
-
-						// Clear textarea
-						messageTextarea.value = '';
-					});
+          setConnection(conn);
 
 					document.getElementById('message-content').addEventListener('keyup', function(e) {
 						if (e.keyCode == 13) {
-							sendButton.click();
+							document.getElementById("send-message").click();
 						}
 					});
 
