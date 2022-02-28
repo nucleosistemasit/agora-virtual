@@ -13,11 +13,11 @@
     <div class="chat-box">
       <label for="local-peer-name" class="form-label">Nome:</label>
       <input id="local-peer-name" class="input-group-text" placeholder="Digite seu nome..." />
-			<button class="btn btn-primary" onclick="startaudio()"">Entrar</button>
+      <button class="btn btn-primary" onclick="startaudio()"">Entrar</button>
       <div id="chat" style="height: 300px; overflow-y: auto;">	
         <textarea id="message-content" class="form-control" placeholder="Digite sua mensagem..."></textarea>
-		    <button id="send-message" class="btn btn-primary">Enviar</button>		
-		  </div>
+        <button id="send-message" class="btn btn-primary">Enviar</button>
+      </div>
     </div>
     <div id="unity-container" class="unity-desktop">
       <canvas id="unity-canvas"></canvas>
@@ -100,33 +100,38 @@
 
       document.body.appendChild(script);        
       var peer = null;
-			var conn = null;
-			var reconnectionInterval = null;
-			var destinationId = null;
-			var peerName = null;
+      var conn = null;
+      var reconnectionInterval = null;
+      var destinationId = null;
+      var peerName = null;
 
       function setConnection(conn) {
         conn.on('open', function() {
           if (reconnectionInterval) {
-						console.log('host reconnected');
-						clearInterval(reconnectionInterval);
-					}
+            console.log('host reconnected');
+            clearInterval(reconnectionInterval);
+          }
 
-					function sendMessage() {
-						// Send message
-						let messageTextarea = document.getElementById('message-content');
-						let messageContent = messageTextarea.value;
-						conn.send({type: 'chat', content: messageContent});
+          function sendMessage() {
+            // Send message
+            let messageTextarea = document.getElementById('message-content');
+            let messageContent = messageTextarea.value;
+            conn.send({type: 'chat', content: messageContent});
 
-						// Print message
-						let peerNode = document.createElement('p');
-						peerNode.innerHTML = '<strong>' + conn.metadata.name + '</strong>: ' + messageContent;
-						document.getElementById('chat').appendChild(peerNode);
-						document.getElementById('chat').scrollTop = document.getElementById('chat').scrollHeight;
+            // Print message
+            let peerNode = document.createElement('p');
+            peerNode.innerHTML = '<strong>' + conn.metadata.name + '</strong>: ' + messageContent;
+            document.getElementById('chat').appendChild(peerNode);
+            document.getElementById('chat').scrollTop = document.getElementById('chat').scrollHeight;
 
-						// Clear textarea
-						messageTextarea.value = '';
-					}
+            // Clear textarea
+            messageTextarea.value = '';
+          }
+
+          window.addEventListener('beforeunload', function(e) {
+            // Close connection when window closes
+            conn.close();
+          });
 
           document.getElementById("send-message").addEventListener("click", sendMessage);
 
@@ -146,25 +151,25 @@
               gameInstance.SendMessage('ScriptHandler', 'SlideChange', data.content);                 
             }              
             else {
-		          if (data.name == 'changeHost') {
+              if (data.name == 'changeHost') {
                 gameInstance.SendMessage('ScriptHandler', 'WhichPalestranteWillTalk', data.content);
-		          }
-		          else if (data.name == 'slideSet') {
-		            gameInstance.SendMessage('ScriptHandler', 'SlideSet', data.content);
-		          }
+              }
+              else if (data.name == 'slideSet') {
+                gameInstance.SendMessage('ScriptHandler', 'SlideSet', data.content);
+              }
             }
           });
 
           // Reconnection
-					conn.on('close', function() {
-						document.getElementById("send-message").removeEventListener("click", sendMessage);
-						// Retry every 5 seconds
-						reconnectionInterval = setInterval(function() {
-							console.log('retrying connection...');
-							conn = peer.connect(destinationId, {metadata: {name: peerName}, serialization: 'json'});
-							setConnection(conn);
-						}, 5000);
-					});
+          conn.on('close', function() {
+            document.getElementById("send-message").removeEventListener("click", sendMessage);
+            // Retry every 5 seconds
+            reconnectionInterval = setInterval(function() {
+              console.log('retrying connection...');
+              conn = peer.connect(destinationId, {metadata: {name: peerName}, serialization: 'json'});
+              setConnection(conn);
+            }, 5000);
+          });
         });
       }
 
@@ -199,15 +204,15 @@
           document.body.appendChild(audioNode);
           destinationId = 'metaversosul-nucleo-1';
           peerName = document.getElementById('local-peer-name').value;
-					conn = peer.connect(destinationId, {metadata: {name: peerName}, serialization: 'json'});
+          conn = peer.connect(destinationId, {metadata: {name: peerName}, serialization: 'json'});
 
           setConnection(conn);
 
-					document.getElementById('message-content').addEventListener('keyup', function(e) {
-						if (e.keyCode == 13) {
-							document.getElementById("send-message").click();
-						}
-					});
+          document.getElementById('message-content').addEventListener('keyup', function(e) {
+            if (e.keyCode == 13) {
+              document.getElementById("send-message").click();
+            }
+          });
 
           peer.on('call', async function(call) {            
             // Answer the call
