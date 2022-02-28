@@ -116,16 +116,19 @@
             // Send message
             let messageTextarea = document.getElementById('message-content');
             let messageContent = messageTextarea.value;
-            conn.send({type: 'chat', content: messageContent});
 
-            // Print message
-            let peerNode = document.createElement('p');
-            peerNode.innerHTML = '<strong>' + conn.metadata.name + '</strong>: ' + messageContent;
-            document.getElementById('chat').appendChild(peerNode);
-            document.getElementById('chat').scrollTop = document.getElementById('chat').scrollHeight;
+            if (messageContent != null && messageContent.trim() !== '') {
+              conn.send({type: 'chat', content: messageContent});
 
-            // Clear textarea
-            messageTextarea.value = '';
+              // Print message
+              let peerNode = document.createElement('p');
+              peerNode.innerHTML = '<strong>' + conn.metadata.name + '</strong>: ' + messageContent;
+              document.getElementById('chat').appendChild(peerNode);
+              document.getElementById('chat').scrollTop = document.getElementById('chat').scrollHeight;
+
+              // Clear textarea
+              messageTextarea.value = '';
+            }
           }
 
           window.addEventListener('beforeunload', function(e) {
@@ -138,7 +141,7 @@
           conn.on('data', function(data) {
             // Participante recebe pacote
             if (data.type == 'chat') {
-              if (data.peer != peer.id) {
+              if (data.peer != peer.id && data.content != null && data.content.trim() !== '') {
                 let peerNode = document.createElement('p');
                 peerNode.innerHTML = '<strong>' + (data.name || 'Palestrante') + '</strong>: ' + data.content;
                 document.getElementById('chat').appendChild(peerNode);
