@@ -12,8 +12,8 @@
   <body>
     <div class="chat-box">
       <label for="local-peer-name" class="form-label">Nome:</label>
-      <input id="local-peer-name" class="input-group-text" placeholder="Digite seu nome..." />
-      <button class="btn btn-primary" onclick="startaudio()"">Entrar</button>
+      <input id="local-peer-name" onkeyup="peerNameCheck()" class="input-group-text" placeholder="Digite seu nome..." />
+      <button id="connect-peer" class="btn btn-primary" disabled>Entrar</button>
       <div id="chat" style="height: 300px; overflow-y: auto;">	
         <textarea id="message-content" class="form-control" placeholder="Digite sua mensagem..."></textarea>
         <button id="send-message" class="btn btn-primary">Enviar</button>
@@ -176,7 +176,20 @@
         });
       }
 
+      document.getElementById("connect-peer").addEventListener("click", startaudio);
+
+      function peerNameCheck() {
+        if (document.getElementById("local-peer-name").value.trim() === "") {
+          document.getElementById("connect-peer").disabled = true;
+        }
+        else {
+          document.getElementById("connect-peer").disabled = false;
+        }
+      }
+
       function startaudio() {
+        document.getElementById("connect-peer").disabled = true;
+        document.getElementById("local-peer-name").disabled = true;
         peer = new Peer({
             config: {
                 'iceServers': [
