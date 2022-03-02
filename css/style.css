@@ -79,7 +79,6 @@ audio {
     display: inline-block;
     height: calc(100% - 130px);
     width: calc(100% + 12px);
-    width: 100%;
     padding-bottom: 30px;
     overflow-y: auto;
     OVERFLOW-X: hidden;
