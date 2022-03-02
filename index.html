@@ -12,9 +12,11 @@
   </head>
   <body>
     <div class="side-panel container-fluid">
-      <label for="local-peer-name" class="form-label">Nome:</label>
-      <input id="local-peer-name" class="input-group-text" placeholder="Digite seu nome..." />
-      <button id="connect-peer" class="btn btn-primary" disabled>Entrar</button>
+      <div class="row dash-name">
+        <label for="local-peer-name" class="col-2 m-auto-0 form-label">Nome:</label>
+        <input id="local-peer-name" class="col-8 input-group-text type-msg" placeholder="Digite seu nome..." />
+        <button id="connect-peer" class="col-2 btn btn-primary btn-enter" disabled>Entrar</button>
+      </div>
       <div id="chat" class="chat">	
       </div>
       <div class="row msg-box">
