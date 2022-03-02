@@ -75,10 +75,12 @@ audio {
     display: block;
 }
 
-.chat {
+.chat.chat-client {
     display: inline-block;
     height: calc(100% - 130px);
+    width: calc(100% + 12px);
     width: 100%;
+    padding-bottom: 30px;
     overflow-y: auto;
     OVERFLOW-X: hidden;
 }
@@ -95,26 +97,6 @@ audio {
     margin: 0px 100% 10px 10px;
     background-color: #f0f0f0;
     border-radius: 5px;
-}
-
-/* width */
-.chat::-webkit-scrollbar {
-    width: 10px;
-}
-
-/* Track */
-.chat::-webkit-scrollbar-track {
-    background: #f1f1f1;
-}
-
-/* Handle */
-.chat::-webkit-scrollbar-thumb {
-    background: #888;
-}
-
-/* Handle on hover */
-.chat::-webkit-scrollbar-thumb:hover {
-    background: #555;
 }
 
 .chat p::before {
@@ -156,6 +138,7 @@ audio {
 .chat strong {
     position: absolute;
     top: -30px;
+    width: 300px;
     color: #5c5c5c;
 }
 
@@ -166,6 +149,27 @@ audio {
 
 .chat strong.s-messaged-chat {
     left: -30px;
+}
+
+/* width */
+.chat::-webkit-scrollbar {
+    width: 10px;
+    right: 0px;
+}
+
+/* Track */
+.chat::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+.chat::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+/* Handle on hover */
+.chat::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
 
 .msg-box {
