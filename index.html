@@ -8,15 +8,18 @@
     <link rel="stylesheet" href="TemplateData/style.css">    
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
+    <link href="css/fontawesome/css/all.min.css" rel="stylesheet">
   </head>
   <body>
-    <div class="chat-box">
+    <div class="side-panel container-fluid">
       <label for="local-peer-name" class="form-label">Nome:</label>
       <input id="local-peer-name" class="input-group-text" placeholder="Digite seu nome..." />
       <button id="connect-peer" class="btn btn-primary" disabled>Entrar</button>
-      <div id="chat" style="height: 300px; overflow-y: auto;">	
-        <textarea id="message-content" class="form-control" placeholder="Digite sua mensagem..."></textarea>
-        <button id="send-message" class="btn btn-primary">Enviar</button>
+      <div id="chat" class="row chat">	
+      </div>
+      <div class="row msg-box">
+        <textarea id="message-content" class="type-msg col-10" placeholder="Mensagem..."></textarea>
+        <button id="send-message" class="col-2 btn btn-send-msg"><i class="fa-regular fa-paper-plane-top"></i></button>
       </div>
     </div>
     <div id="unity-container" class="unity-desktop">
@@ -38,6 +41,7 @@
     </div>
     <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script defer src="js/fontawesome/all.min.js"></script>
     <script>
       var buildUrl = "Build";
       var loaderUrl = buildUrl + "/PALESTRA_METAVERSOCAXIAS_DEV.loader.js";
