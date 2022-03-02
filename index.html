@@ -15,7 +15,7 @@
       <label for="local-peer-name" class="form-label">Nome:</label>
       <input id="local-peer-name" class="input-group-text" placeholder="Digite seu nome..." />
       <button id="connect-peer" class="btn btn-primary" disabled>Entrar</button>
-      <div id="chat" class="row chat">	
+      <div id="chat" class="chat">	
       </div>
       <div class="row msg-box">
         <textarea id="message-content" class="type-msg col-10" placeholder="Mensagem..."></textarea>
@@ -150,7 +150,8 @@
             if (data.type == 'chat') {
               if (data.peer != peer.id && data.content != null && data.content.trim() !== '') {
                 let peerNode = document.createElement('p');
-                peerNode.innerHTML = '<strong>' + (data.name || 'Palestrante') + '</strong>: ' + data.content;
+                peerNode.className = "p-messaged-chat";
+                peerNode.innerHTML = '<strong class="s-messaged-chat">' + (data.name || 'Palestrante') + '</strong> ' + data.content;
                 document.getElementById('chat').appendChild(peerNode);
                 document.getElementById('chat').scrollTop = document.getElementById('chat').scrollHeight;
               }
