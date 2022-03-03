@@ -54,6 +54,14 @@ audio {
     background-color: #e3e3e3;
 }
 
+.banner {
+    height: 100px;
+    background: url(imgs/banner.png);
+    background-position: center;
+    background-size: auto 100px;
+    background-repeat: no-repeat;
+}
+
 .dash-name .type-msg {
     background: none;
     border: none;
@@ -77,7 +85,7 @@ audio {
 
 .chat.chat-client {
     display: inline-block;
-    height: calc(100% - 130px);
+    height: calc(100% - 230px);
     width: calc(100% + 12px);
     padding-bottom: 30px;
     overflow-y: auto;
