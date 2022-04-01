@@ -134,6 +134,7 @@ audio {
     padding-top: 20px;
     overflow-y: auto;
     OVERFLOW-X: hidden;
+    background-color: white
 }
 
 .chat .msg-container {
